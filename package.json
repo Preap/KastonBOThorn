@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
-    "winston": "^3.2.1",
-    "node": "12.4.0"
+    "node": "^12.4.0",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
