@@ -1,6 +1,11 @@
 require("dotenv").config();
 var Discord = require("discord.io");
+var CatAPI = require("./test").CatAPI;
+var person = require("./test").Person;
+var catAPI = new CatAPI();
+
 var logger = require("winston");
+var http = require("http");
 var auth = process.env.AUTH;
 // Configure logger settings
 logger.remove(logger.transports.Console);
@@ -17,10 +22,17 @@ bot.on("ready", function(evt) {
   logger.info("Connected");
   logger.info("Logged in as: ");
   logger.info(bot.username + " - (" + bot.id + ")");
+  var imageURL;
+  var catAPI = new CatAPI();
+  // catAPI.makeRequest(response => {
+  //   console.log(response);
+  //   imageURL = response;
+  //   console.log("imageURL: " + imageURL);
+  // });
 });
 bot.on("message", function(user, userID, channelID, message, evt) {
   // Our bot needs to know if it will execute a command
-  // It will listen for messages that will start with `!`
+  // It will listen for messages that will start with `~`
   if (message.substring(0, 1) == "~") {
     var args = message.substring(1).split(" ");
     var cmd = args[0];
@@ -29,10 +41,32 @@ bot.on("message", function(user, userID, channelID, message, evt) {
     switch (cmd) {
       // !ping
       case "ping":
-        responseWith("Pongooos!", channelID);
+        responseWith("Pongo!", channelID);
         break;
       case "pong":
         responseWith("WTF??", channelID);
+        break;
+      case "exoumento":
+        bot.uploadFile({
+          file: "./apofitisi.jpg",
+          to: channelID
+        });
+        break;
+      case "catplz":
+        catAPI.makeRequest(response => {
+          // bot.sendMessage({
+          //   to: channelID,
+          //   embed: {
+          //     thumbnail: {
+          //       url: response
+          //     }
+          //   }
+          // });
+          bot.sendMessage({
+            to: channelID,
+            message: response
+          });
+        });
         break;
       default:
         var randomNumber = getRandomNumber(2, 3);
@@ -43,7 +77,6 @@ bot.on("message", function(user, userID, channelID, message, evt) {
         console.log(bank[user].ballance);
         responseWith(randomNumber, channelID);
         response = user + " has " + bank[user].ballance + " EUR!";
-        responseWith(response, channelID);
     }
   }
 });
