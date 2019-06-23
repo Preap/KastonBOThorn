@@ -1,7 +1,6 @@
 require("dotenv").config();
 var Discord = require("discord.io");
-var CatAPI = require("./test").CatAPI;
-var person = require("./test").Person;
+var CatAPI = require("./CatAPI").CatAPI;
 var catAPI = new CatAPI();
 
 var logger = require("winston");
